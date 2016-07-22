@@ -6,8 +6,7 @@ namespace DockerToolsPerf.Controllers
     {
         public IActionResult Index()
         {
-            return new OkObjectResult("Hello world");
-            //return View();
+            return View();
         }
 
         public IActionResult About()

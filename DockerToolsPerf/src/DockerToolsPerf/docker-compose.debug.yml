@@ -5,7 +5,7 @@ services:
     image: weidazhao/dockertoolsperf:Debug
     environment:
       - REMOTE_DEBUGGING=${REMOTE_DEBUGGING}
-      - DOTNET_PACKAGES=/dotnet_packages
+      - DOTNET_PACKAGES_CACHE=/dotnet_packages
     ports:
       - "80:80"
     volumes:
