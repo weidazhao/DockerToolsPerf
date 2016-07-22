@@ -142,7 +142,7 @@ $DockerWorkingDirectory = "/app/"
 $ProjectName = $ProjectName -replace "[^a-zA-Z0-9]", ""
 
 # The name of the image created by the docker file
-$ImageName = "username/dockertoolsperf"
+$ImageName = "weidazhao/dockertoolsperf"
 
 # Calculate the name of the container created by the compose file
 $ContainerName = "${ProjectName}_dockertoolsperf"
