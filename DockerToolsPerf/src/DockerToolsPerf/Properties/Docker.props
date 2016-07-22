@@ -11,7 +11,7 @@
 
     <!-- Use these properties to configure the process that will be started by the debugger in the container -->
     <DockerDebugStartProcess>dotnet</DockerDebugStartProcess>
-    <DockerDebugStartArgs>/app/DockerToolsPerf.dll</DockerDebugStartArgs>
+    <DockerDebugStartArgs>/app/bin/Debug/netcoreapp1.0/DockerToolsPerf.dll</DockerDebugStartArgs>
     <DockerDebugWorkingDirectory>/app/</DockerDebugWorkingDirectory>
   </PropertyGroup>
 </Project>

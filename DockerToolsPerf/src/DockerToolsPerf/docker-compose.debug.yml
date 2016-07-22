@@ -5,7 +5,10 @@ services:
     image: weidazhao/dockertoolsperf:Debug
     environment:
       - REMOTE_DEBUGGING=${REMOTE_DEBUGGING}
+      - DOTNET_PACKAGES=/dotnet_packages
     ports:
       - "80:80"
     volumes:
       - .:/app
+      - /c/Users/dazhao/.nuget/packages:/dotnet_packages:ro
+      - /c/clrdbg:/clrdbg:ro

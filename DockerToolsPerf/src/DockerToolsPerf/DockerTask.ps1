@@ -190,23 +190,23 @@ function Clean () {
 # Runs docker build.
 function Build () {
     # Publish the project
-    PublishProject
+    # PublishProject
 
-    # If we're not in Release, check if the debugger has been deployed locally
-    if ($Environment -ne "Release" -and -not (Test-Path $clrDbgPath)) {
-        # Ensure we have the script for getting the debugger
-        $dbgScriptPath = Join-Path $dockerBinFolder "GetClrDbg.ps1"
-        if (-not (Test-Path $dbgScriptPath)) {
-            Invoke-WebRequest "https://raw.githubusercontent.com/Microsoft/MIEngine/getclrdbg-release/scripts/GetClrDbg.ps1" -OutFile $dbgScriptPath
-        }
-        # Need to escape any spaces in the $dbgScriptPath in order to call Invoke-Expression on it
-        $escapedScriptPath = $dbgScriptPath.Replace(" ", "`` ")
+    # # If we're not in Release, check if the debugger has been deployed locally
+    # if ($Environment -ne "Release" -and -not (Test-Path $clrDbgPath)) {
+    #     # Ensure we have the script for getting the debugger
+    #     $dbgScriptPath = Join-Path $dockerBinFolder "GetClrDbg.ps1"
+    #     if (-not (Test-Path $dbgScriptPath)) {
+    #         Invoke-WebRequest "https://raw.githubusercontent.com/Microsoft/MIEngine/getclrdbg-release/scripts/GetClrDbg.ps1" -OutFile $dbgScriptPath
+    #     }
+    #     # Need to escape any spaces in the $dbgScriptPath in order to call Invoke-Expression on it
+    #     $escapedScriptPath = $dbgScriptPath.Replace(" ", "`` ")
+    # 
+    #     # Run the script to get the debugger
+    #     Invoke-Expression "$escapedScriptPath -Version '$ClrDebugVersion' -RuntimeID '$RuntimeID' -InstallPath '$clrDbgPath'"
+    # }
 
-        # Run the script to get the debugger
-        Invoke-Expression "$escapedScriptPath -Version '$ClrDebugVersion' -RuntimeID '$RuntimeID' -InstallPath '$clrDbgPath'"
-    }
-
-    $dockerFilePath = GetDockerFilePath($pubPath)
+    $dockerFilePath = GetDockerFilePath($ProjectFolder)
 
     $buildArgs = ""
     if ($NoCache)
@@ -220,7 +220,7 @@ function Build () {
     }
 
     # Call docker-compose on the published project to build the images
-    $shellCommand = "docker build -f '$dockerFilePath' -t $taggedImageName $buildArgs '$buildContext'"
+    $shellCommand = "docker build -f '$dockerFilePath' -t $taggedImageName $buildArgs ."
     Write-Verbose "Executing: $shellCommand"
     Invoke-Expression "cmd /c $shellCommand `"2>&1`""
     if ($LastExitCode -ne 0) {
@@ -263,7 +263,7 @@ function ValidateVolumeMapping () {
 
 # Runs docker run
 function Run () {
-    $composeFilePath = GetComposeFilePath($pubPath)
+    $composeFilePath = GetComposeFilePath($ProjectFolder)
 
     $conflictingContainerIds = $(docker ps | select-string -pattern ":80->" | foreach { Write-Output $_.Line.split()[0] })
 
@@ -363,7 +363,7 @@ function Refresh () {
     Invoke-Expression $shellCommand
 
     # Publish the project
-    PublishProject
+    # PublishProject
 
     # Restart the process
     $shellCommand = "docker exec -i $containerId $Command"
