@@ -8,6 +8,7 @@
   <PropertyGroup>
     <DockerBuildDependsOn>
       SetDockerProps;
+      UpdateRuntimeConfigDevJson;
       CoreDockerBuild;
     </DockerBuildDependsOn>
     <DockerCleanDependsOn>
@@ -19,6 +20,31 @@
       CoreDockerBeforeRebuild;
     </DockerBeforeRebuildDependsOn>
   </PropertyGroup>
+
+  <UsingTask TaskName="FixUpRuntimeConfigDevJson" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" >
+    <ParameterGroup>
+      <RuntimeConfigDevJsonFile ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO"/>
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+  
+        const string Contents =
+@"{
+  ""runtimeOptions"": {
+    ""additionalProbingPaths"": [
+      ""/dotnet_packages""
+    ]
+  }
+}
+";
+
+        File.WriteAllText(RuntimeConfigDevJsonFile, Contents);
+]]>
+      </Code>
+    </Task>
+  </UsingTask>
 
   <!-- This target dynamically sets the DockerBuild property based on the ActiveDebugProfile so that docker commands will only be invoked when targeting docker -->
   <Target Name="SetDockerProps">
@@ -60,4 +86,9 @@
       <NoDockerCache>True</NoDockerCache>
     </PropertyGroup>
   </Target>
+
+  <Target Name="UpdateRuntimeConfigDevJson" Condition="'$(DockerBuild)'=='True'">
+    <FixUpRuntimeConfigDevJson RuntimeConfigDevJsonFile="$(OutputPath)\$(Configuration)\netcoreapp1.0\$(MSBuildProjectName).runtimeconfig.dev.json" />
+  </Target>
+
 </Project>
