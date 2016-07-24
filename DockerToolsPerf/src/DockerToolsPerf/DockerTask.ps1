@@ -192,19 +192,19 @@ function Build () {
     # Publish the project
     # PublishProject
 
-    # # If we're not in Release, check if the debugger has been deployed locally
-    # if ($Environment -ne "Release" -and -not (Test-Path $clrDbgPath)) {
-    #     # Ensure we have the script for getting the debugger
-    #     $dbgScriptPath = Join-Path $dockerBinFolder "GetClrDbg.ps1"
-    #     if (-not (Test-Path $dbgScriptPath)) {
-    #         Invoke-WebRequest "https://raw.githubusercontent.com/Microsoft/MIEngine/getclrdbg-release/scripts/GetClrDbg.ps1" -OutFile $dbgScriptPath
-    #     }
-    #     # Need to escape any spaces in the $dbgScriptPath in order to call Invoke-Expression on it
-    #     $escapedScriptPath = $dbgScriptPath.Replace(" ", "`` ")
-    # 
-    #     # Run the script to get the debugger
-    #     Invoke-Expression "$escapedScriptPath -Version '$ClrDebugVersion' -RuntimeID '$RuntimeID' -InstallPath '$clrDbgPath'"
-    # }
+    # If we're not in Release, check if the debugger has been deployed locally
+    if ($Environment -ne "Release" -and -not (Test-Path $clrDbgPath)) {
+        # Ensure we have the script for getting the debugger
+        $dbgScriptPath = (Join-Path $env:temp "GetClrDbg.ps1")
+        if (-not (Test-Path $dbgScriptPath)) {
+            Invoke-WebRequest "https://raw.githubusercontent.com/Microsoft/MIEngine/getclrdbg-release/scripts/GetClrDbg.ps1" -OutFile $dbgScriptPath
+        }
+        # Need to escape any spaces in the $dbgScriptPath in order to call Invoke-Expression on it
+        $escapedScriptPath = $dbgScriptPath.Replace(" ", "`` ")
+    
+        # Run the script to get the debugger
+        Invoke-Expression "$escapedScriptPath -Version '$ClrDebugVersion' -RuntimeID '$RuntimeID' -InstallPath '$clrDbgPath'"
+    }
 
     $dockerFilePath = GetDockerFilePath($ProjectFolder)
 
@@ -488,7 +488,7 @@ $buildContext = Join-Path $dockerBinFolder $Environment
 # The folder to publish the app to
 $pubPath = Join-Path $buildContext "app"
 # The folder to install the debugger to
-$clrDbgPath = Join-Path $buildContext "clrdbg"
+$clrDbgPath = Join-Path $env:UserProfile "clrdbg"
 
 Write-Verbose "Setting: `$env:CLRDBG_VERSION = `"$ClrDebugVersion`""
 $env:CLRDBG_VERSION = "$ClrDebugVersion"

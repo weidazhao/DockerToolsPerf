@@ -10,5 +10,5 @@ services:
       - "80:80"
     volumes:
       - .:/app
-      - /c/Users/dazhao/.nuget/packages:/dotnet_packages:ro
-      - /c/clrdbg:/clrdbg:ro
+      - ~/.nuget/packages:/dotnet_packages:ro
+      - ~/clrdbg:/clrdbg:ro
