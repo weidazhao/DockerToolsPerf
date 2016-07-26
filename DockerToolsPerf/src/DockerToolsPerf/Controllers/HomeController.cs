@@ -11,14 +11,14 @@ namespace DockerToolsPerf.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "Your application description page. " + new MyClassLib.MyLib().Value;
 
             return View();
         }
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = "Your contact page. " + new MyClassLib.MyLib().Value;
 
             return View();
         }
