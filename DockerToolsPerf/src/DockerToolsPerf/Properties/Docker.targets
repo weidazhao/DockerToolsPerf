@@ -53,6 +53,11 @@
     </PropertyGroup>
   </Target>
 
+  <!-- This target takes care of reporting failures from calling the powershell script in CoreDockerBuild -->
+  <Target Name="CoreDockerBuildFailed">
+    <Error File="$(MSBuildProjectDirectory)\DockerTask.ps1" Text="Error Running: $(DockerBuildCommand). See the output window for details."></Error>
+  </Target>
+
   <!-- These targets take care of buiding the docker image as part of the project's build -->
   <Target Name="DockerBuild" AfterTargets="Build" DependsOnTargets="$(DockerBuildDependsOn)" />
   <Target Name="CoreDockerBuild" Condition="'$(DockerBuild)'=='True'">
@@ -64,6 +69,12 @@
     <Exec
       WorkingDirectory="$(MSBuildProjectDirectory)"
       Command="$(DockerBuildCommand)" />
+    <OnError ExecuteTargets="CoreDockerBuildFailed"/>
+  </Target>
+
+  <!-- This target takes care of reporting failures from calling the powershell script in CoreDockerClean -->
+  <Target Name="CoreDockerCleanFailed">
+    <Error File="$(MSBuildProjectDirectory)\DockerTask.ps1" Text="Error Running: $(DockerCleanCommand). See the output window for details."></Error>
   </Target>
 
   <!-- These targets take care of buiding the docker image as part of the project's clean -->
@@ -76,6 +87,7 @@
     <Exec
       WorkingDirectory="$(MSBuildProjectDirectory)"
       Command="$(DockerCleanCommand)" />
+    <OnError ExecuteTargets="CoreDockerCleanFailed"/>
   </Target>
 
   <!-- These targets take care of buiding the docker image as part of the project's rebuild -->

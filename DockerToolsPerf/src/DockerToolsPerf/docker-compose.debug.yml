@@ -3,6 +3,9 @@ version: '2'
 services:
   dockertoolsperf:
     image: weidazhao/dockertoolsperf:Debug
+    build:
+      context: .
+      dockerfile: Dockerfile.debug
     environment:
       - REMOTE_DEBUGGING=${REMOTE_DEBUGGING}
       - DOTNET_PACKAGES_CACHE=/dotnet_packages

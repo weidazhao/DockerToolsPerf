@@ -3,5 +3,8 @@ version: '2'
 services:
   dockertoolsperf:
     image: weidazhao/dockertoolsperf
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "80:80"
