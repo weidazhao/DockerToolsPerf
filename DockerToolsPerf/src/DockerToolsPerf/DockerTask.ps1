@@ -256,12 +256,12 @@ function Run () {
 
     if ($conflictingContainerIds) {
         $conflictingContainerIds = $conflictingContainerIds -Join ' '
-        Write-Host "Stopping conflicting containers using port 80"
-        $stopCommand = "docker stop $conflictingContainerIds"
-        Write-Verbose "Executing: $stopCommand"
-        Invoke-Expression "cmd /c $stopCommand `"2>&1`""
+        Write-Host "Killing conflicting containers using port 80"
+        $killCommand = "docker kill $conflictingContainerIds"
+        Write-Verbose "Executing: $killCommand"
+        Invoke-Expression "cmd /c $killCommand `"2>&1`""
         if ($LastExitCode -ne 0) {
-            Write-Error "Failed to stop the container(s)"
+            Write-Error "Failed to kill the container(s)"
         }
     }
 
