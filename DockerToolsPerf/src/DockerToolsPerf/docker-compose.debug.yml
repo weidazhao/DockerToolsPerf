@@ -2,7 +2,7 @@ version: '2'
 
 services:
   dockertoolsperf:
-    image: weidazhao/dockertoolsperf
+    image: weidazhao/dockertoolsperf:dev
     build:
       context: .
       dockerfile: Dockerfile.debug
