@@ -2,14 +2,14 @@ version: '2'
 
 services:
   dockertoolsperf:
-    image: weidazhao/dockertoolsperf:Debug
+    image: weidazhao/dockertoolsperf
     build:
       context: .
       dockerfile: Dockerfile.debug
     environment:
+      - APP_ASSEMBLY=${APP_ASSEMBLY}
       - REMOTE_DEBUGGING=${REMOTE_DEBUGGING}
       - DOTNET_PACKAGES_CACHE=/dotnet_packages
-      - APP_ASSEMBLY=/app/bin/Debug/netcoreapp1.0/DockerToolsPerf.dll
     ports:
       - "80:80"
     volumes:
