@@ -9,6 +9,7 @@ services:
     environment:
       - REMOTE_DEBUGGING=${REMOTE_DEBUGGING}
       - DOTNET_PACKAGES_CACHE=/dotnet_packages
+      - APP_ASSEMBLY=/app/bin/Debug/netcoreapp1.0/DockerToolsPerf.dll
     ports:
       - "80:80"
     volumes:
