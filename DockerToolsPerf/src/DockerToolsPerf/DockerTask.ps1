@@ -197,8 +197,8 @@ function Build () {
     # Publish the project
     # PublishProject
 
-    # If we're not in Release, check if the debugger has been deployed locally
-    if ($Environment -ne "Release" -and -not (Test-Path $clrDbgPath)) {
+    # Check if the debugger has been deployed locally
+    if (-not (Test-Path $clrDbgPath)) {
         # Ensure we have the script for getting the debugger
         $dbgScriptPath = (Join-Path $env:temp "GetClrDbg.ps1")
         if (-not (Test-Path $dbgScriptPath)) {
