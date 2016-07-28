@@ -473,8 +473,6 @@ else {
     $env:REMOTE_DEBUGGING = 0
 }
 
-$env:APP_ASSEMBLY = "bin/$Environment/$Framework/DockerToolsPerf.dll"
-
 # Call the correct functions for the parameters that were used
 if ($Clean) {
     Clean

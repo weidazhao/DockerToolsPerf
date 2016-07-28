@@ -6,6 +6,7 @@ services:
     labels:
       - "com.microsoft.visualstudio.devcontainer"
     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
       - DOTNET_PACKAGES_CACHE=/dotnet_packages
       - REMOTE_DEBUGGING=${REMOTE_DEBUGGING}
     volumes:
