@@ -7,7 +7,6 @@ services:
       context: .
       dockerfile: Dockerfile.debug
     environment:
-      - APP_ASSEMBLY=${APP_ASSEMBLY}
       - DOTNET_PACKAGES_CACHE=/dotnet_packages
       - REMOTE_DEBUGGING=${REMOTE_DEBUGGING}
     ports:
