@@ -7,10 +7,9 @@ services:
       - "com.microsoft.visualstudio.devcontainer"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - DOTNET_PACKAGES_CACHE=/dotnet_packages
       - REMOTE_DEBUGGING=${REMOTE_DEBUGGING}
     volumes:
       - .:/app
-      - ~/.nuget/packages:/dotnet_packages:ro
+      - ~/.nuget/packages:/root/.nuget/packages:ro
       - ~/clrdbg:/clrdbg:ro
     entrypoint: tail -f /dev/null

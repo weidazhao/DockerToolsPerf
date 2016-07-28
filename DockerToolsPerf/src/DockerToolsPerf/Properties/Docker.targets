@@ -34,7 +34,7 @@
 @"{
   ""runtimeOptions"": {
     ""additionalProbingPaths"": [
-      ""/dotnet_packages""
+      ""/root/.nuget/packages""
     ]
   }
 }
