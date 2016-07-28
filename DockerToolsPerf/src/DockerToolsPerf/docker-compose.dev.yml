@@ -2,10 +2,9 @@ version: '2'
 
 services:
   dockertoolsperf:
+    image: microsoft/dotnet:1.0.0-core
     labels:
       - "com.microsoft.visualstudio.devcontainer"
-    build:
-      dockerfile: Dockerfile.dev
     environment:
       - DOTNET_PACKAGES_CACHE=/dotnet_packages
       - REMOTE_DEBUGGING=${REMOTE_DEBUGGING}
