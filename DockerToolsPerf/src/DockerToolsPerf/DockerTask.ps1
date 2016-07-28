@@ -155,10 +155,11 @@ $Framework = "netcoreapp1.0"
 
 # Kills all containers using an image, removes all containers using an image, and removes the image.
 function Clean () {
-    $composeFilePath = GetComposeFilePath($ProjectFolder)
+    $composeFilePath = Join-Path $ProjectFolder "docker-compose.yml"
+    $composeDevFilePath = Join-Path $ProjectFolder "docker-compose.dev.yml"
 
     # Call compose-down to clean up the containers
-    $shellCommand = "docker-compose -f '$composeFilePath' -p $ProjectName down"
+    $shellCommand = "docker-compose -f '$composeFilePath' -f '$composeDevFilePath' -p $ProjectName down"
     Write-Verbose "Executing: $shellCommand"
     Invoke-Expression "cmd /c $shellCommand `"2>&1`""
     if ($LastExitCode -ne 0) {
@@ -210,7 +211,8 @@ function Build () {
         Invoke-Expression "$escapedScriptPath -Version '$ClrDebugVersion' -RuntimeID '$RuntimeID' -InstallPath '$clrDbgPath'"
     }
 
-    $composeFilePath = GetComposeFilePath($ProjectFolder)
+    $composeFilePath = Join-Path $ProjectFolder "docker-compose.yml"
+    $composeDevFilePath = Join-Path $ProjectFolder "docker-compose.dev.yml"
 
     $buildArgs = ""
     if ($NoCache)
@@ -219,7 +221,7 @@ function Build () {
     }
 
     # Call docker-compose on the published project to build the images
-    $shellCommand = "docker-compose -f '$composeFilePath' -p $ProjectName build $buildArgs"
+    $shellCommand = "docker-compose -f '$composeFilePath' -f '$composeDevFilePath' -p $ProjectName build $buildArgs"
     Write-Verbose "Executing: $shellCommand"
     Invoke-Expression "cmd /c $shellCommand `"2>&1`""
     if ($LastExitCode -ne 0) {
@@ -250,7 +252,8 @@ function ValidateVolumeMapping () {
 
 # Runs docker run
 function Run () {
-    $composeFilePath = GetComposeFilePath($ProjectFolder)
+    $composeFilePath = Join-Path $ProjectFolder "docker-compose.yml"
+    $composeDevFilePath = Join-Path $ProjectFolder "docker-compose.dev.yml"
 
     $conflictingContainerIds = $(docker ps | select-string -pattern ":80->" | foreach { Write-Output $_.Line.split()[0] })
 
@@ -265,7 +268,7 @@ function Run () {
         }
     }
 
-    $shellCommand = "docker-compose -f '$composeFilePath' -p $ProjectName up -d"
+    $shellCommand = "docker-compose -f '$composeFilePath' -f '$composeDevFilePath' -p $ProjectName up -d"
     Write-Verbose "Executing: $shellCommand"
     Invoke-Expression "cmd /c $shellCommand `"2>&1`""
     if ($LastExitCode -ne 0) {
@@ -416,20 +419,6 @@ function PublishProject () {
     finally {
         # Restore path to its old value
         $Env:Path = $oldPath
-    }
-}
-
-function GetComposeFilePath([string]$folder) {
-    $composeFileName = "docker-compose.yml"
-    if ($Environment -ne "Release") {
-        $composeFileName = "docker-compose.$($Environment.ToLower()).yml"
-    }
-    $composeFilePath = Join-Path $folder $composeFileName
-
-    if (Test-Path $composeFilePath) {
-        return $composeFilePath
-    } else {
-        Write-Error -Message "$Environment is not a valid parameter. File '$composeFilePath' does not exist." -Category InvalidArgument
     }
 }
 

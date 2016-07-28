@@ -6,7 +6,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    working_dir: /app
     environment:
       - ASPNETCORE_URLS=http://*:5000
     ports:
       - "80:5000"
+    entrypoint: dotnet DockerToolsPerf.dll

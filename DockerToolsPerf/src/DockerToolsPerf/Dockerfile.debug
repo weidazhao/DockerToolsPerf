@@ -1,7 +1,0 @@
-FROM microsoft/dotnet:1.0.0-core
-
-# Set the Working Directory
-WORKDIR /app
-
-# Keep the container alive
-ENTRYPOINT ["/bin/bash", "-c", "tail -f /dev/null"]
