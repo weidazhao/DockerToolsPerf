@@ -4,7 +4,7 @@ services:
   dockertoolsperf:
     image: microsoft/dotnet:1.0.0-core
     labels:
-      - "com.microsoft.visualstudio.devcontainer"
+      - "microsoft.aspnetcore.developmentcontainer"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     volumes:
