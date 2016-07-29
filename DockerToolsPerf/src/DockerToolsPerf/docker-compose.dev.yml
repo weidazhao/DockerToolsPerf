@@ -7,7 +7,6 @@ services:
       - "com.microsoft.visualstudio.devcontainer"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - REMOTE_DEBUGGING=${REMOTE_DEBUGGING}
     volumes:
       - .:/app
       - ~/.nuget/packages:/root/.nuget/packages:ro
