@@ -353,7 +353,7 @@ function Refresh () {
     $containerId = GetContainerId
 
     # Kill any existing process
-    $shellCommand = "docker exec -i $containerId /bin/bash -c 'if PID=`$(pidof -x $Command); then kill `$PID; fi'"
+    $shellCommand = "docker exec -i $containerId /bin/bash -c 'if PID=`$(pidof -x dotnet); then kill `$PID; fi'"
     Write-Verbose "Executing: $shellCommand"
     Invoke-Expression $shellCommand
 
