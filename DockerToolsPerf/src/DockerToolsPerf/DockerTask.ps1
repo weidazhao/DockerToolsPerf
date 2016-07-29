@@ -362,7 +362,7 @@ function Refresh () {
 
     $env_path = [Environment]::GetEnvironmentVariable("Path")
     [Environment]::SetEnvironmentVariable("Path", $env_path + ";C:\Program Files (x86)\MSBuild\14.0\Bin", "Process")
-    $shellCommand = "msbuild /p:DockerBuild=false /p:ForceUpdateRuntimeConfigDevJson=true $ProjectFolder\DockerToolsPerf.xproj"
+    $shellCommand = "msbuild /p:DockerBuild=false $ProjectFolder\DockerToolsPerf.xproj"
     Write-Verbose "Executing: $shellCommand"
     Invoke-Expression $shellCommand
 
