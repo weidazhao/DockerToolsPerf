@@ -1,7 +1,0 @@
-version: '2'
-
-services:
-  dockertoolsperf:
-    build:
-      context: .
-      dockerfile: Dockerfile

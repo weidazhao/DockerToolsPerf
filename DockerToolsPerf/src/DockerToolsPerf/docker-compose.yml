@@ -3,6 +3,9 @@ version: '2'
 services:
   dockertoolsperf:
     image: weidazhao/dockertoolsperf
+    build:
+      context: .
+      dockerfile: Dockerfile
     working_dir: /app
     environment:
       - ASPNETCORE_URLS=http://*:5000

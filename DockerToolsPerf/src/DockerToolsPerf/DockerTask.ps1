@@ -159,7 +159,7 @@ function Clean () {
     $composeDevFilePath = Join-Path $ProjectFolder "docker-compose.dev.yml"
 
     # Call compose-down to clean up the containers
-    $shellCommand = "docker-compose -f '$composeFilePath' -f '$composeDevFilePath' -p $ProjectName down"
+    $shellCommand = "docker-compose -f '$composeFilePath' -f '$composeDevFilePath' down"
     Write-Verbose "Executing: $shellCommand"
     Invoke-Expression "cmd /c $shellCommand `"2>&1`""
     if ($LastExitCode -ne 0) {
@@ -211,22 +211,27 @@ function Build () {
         Invoke-Expression "$escapedScriptPath -Version '$ClrDebugVersion' -RuntimeID '$RuntimeID' -InstallPath '$clrDbgPath'"
     }
 
-    $composeFilePath = Join-Path $ProjectFolder "docker-compose.yml"
-    $composeDevFilePath = Join-Path $ProjectFolder "docker-compose.dev.yml"
+    # $composeFilePath = Join-Path $ProjectFolder "docker-compose.yml"
+    # $composeBldFilePath = Join-Path $ProjectFolder "docker-compose.bld.yml"
 
-    $buildArgs = ""
-    if ($NoCache)
-    {
-        $buildArgs = "--no-cache"
-    }
+    # $buildArgs = ""
+    # if ($NoCache)
+    # {
+    #     $buildArgs = "--no-cache"
+    # }
 
-    # Call docker-compose on the published project to build the images
-    $shellCommand = "docker-compose -f '$composeFilePath' -f '$composeDevFilePath' -p $ProjectName build $buildArgs"
-    Write-Verbose "Executing: $shellCommand"
+    # # Call docker-compose on the published project to build the images
+    # $shellCommand = "docker-compose -f '$composeFilePath' -f '$composeBldFilePath' build $buildArgs"
+    # Write-Verbose "Executing: $shellCommand"
+    # Invoke-Expression "cmd /c $shellCommand `"2>&1`""
+    # if ($LastExitCode -ne 0) {
+    #     Write-Error "Failed to build the image"
+    # }
+
+    # Download base image
+    $shellCommand = "docker pull microsoft/dotnet:1.0.0-core"
+    Write-Verbose "Executing: $shellCommand";
     Invoke-Expression "cmd /c $shellCommand `"2>&1`""
-    if ($LastExitCode -ne 0) {
-        Write-Error "Failed to build the image"
-    }
 }
 
 function GetContainerId () {
@@ -268,7 +273,7 @@ function Run () {
         }
     }
 
-    $shellCommand = "docker-compose -f '$composeFilePath' -f '$composeDevFilePath' -p $ProjectName up -d"
+    $shellCommand = "docker-compose -f '$composeFilePath' -f '$composeDevFilePath' up -d --no-build"
     Write-Verbose "Executing: $shellCommand"
     Invoke-Expression "cmd /c $shellCommand `"2>&1`""
     if ($LastExitCode -ne 0) {
