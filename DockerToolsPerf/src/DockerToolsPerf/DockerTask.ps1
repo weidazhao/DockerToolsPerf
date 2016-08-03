@@ -194,9 +194,6 @@ function Clean () {
 
 # Runs docker build.
 function Build () {
-    # Publish the project
-    # PublishProject
-
     # Check if the debugger has been deployed locally
     if (-not (Test-Path $clrDbgPath)) {
         # Ensure we have the script for getting the debugger
@@ -210,23 +207,6 @@ function Build () {
         # Run the script to get the debugger
         Invoke-Expression "$escapedScriptPath -Version '$ClrDebugVersion' -RuntimeID '$RuntimeID' -InstallPath '$clrDbgPath'"
     }
-
-    # $composeFilePath = Join-Path $ProjectFolder "docker-compose.yml"
-    # $composeBldFilePath = Join-Path $ProjectFolder "docker-compose.bld.yml"
-
-    # $buildArgs = ""
-    # if ($NoCache)
-    # {
-    #     $buildArgs = "--no-cache"
-    # }
-
-    # # Call docker-compose on the published project to build the images
-    # $shellCommand = "docker-compose -f '$composeFilePath' -f '$composeBldFilePath' build $buildArgs"
-    # Write-Verbose "Executing: $shellCommand"
-    # Invoke-Expression "cmd /c $shellCommand `"2>&1`""
-    # if ($LastExitCode -ne 0) {
-    #     Write-Error "Failed to build the image"
-    # }
 }
 
 function GetContainerId () {
