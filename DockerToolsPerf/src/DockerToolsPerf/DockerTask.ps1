@@ -227,11 +227,6 @@ function Build () {
     # if ($LastExitCode -ne 0) {
     #     Write-Error "Failed to build the image"
     # }
-
-    # Download base image
-    $shellCommand = "docker pull microsoft/dotnet:1.0.0-core"
-    Write-Verbose "Executing: $shellCommand";
-    Invoke-Expression "cmd /c $shellCommand `"2>&1`""
 }
 
 function GetContainerId () {
@@ -273,7 +268,15 @@ function Run () {
         }
     }
 
-    $shellCommand = "docker-compose -f '$composeFilePath' -f '$composeDevFilePath' up -d --no-build"
+    $dummyFolder = Join-Path $ProjectFolder "obj/dummy-folder-for-docker-build"
+
+    if (Test-Path $dummyFolder) {
+        Remove-Item $dummyFolder -Force -Recurse
+    }
+
+    New-Item $dummyFolder -Type Directory
+
+    $shellCommand = "docker-compose -f '$composeFilePath' -f '$composeDevFilePath' up -d"
     Write-Verbose "Executing: $shellCommand"
     Invoke-Expression "cmd /c $shellCommand `"2>&1`""
     if ($LastExitCode -ne 0) {

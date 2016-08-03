@@ -2,7 +2,9 @@ version: '2'
 
 services:
   dockertoolsperf:
-    image: microsoft/dotnet:1.0.0-core
+    build:
+      args:
+        source: obj/dummy-folder-for-docker-build
     labels:
       - "microsoft.aspnetcore.developmentcontainer"
     environment:
